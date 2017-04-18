@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".imgurllery.presentation.gallery.GalleryActivity" />
-        <activity android:name=".imgurllery.presentation.detail.DetailActivity"></activity>
+        <activity android:name=".imgurllery.presentation.detail.DetailsActivity"></activity>
     </application>
 
 </manifest>

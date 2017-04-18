@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.lethalskillzz.imgurllery.R;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
