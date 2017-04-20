@@ -140,21 +140,6 @@ public class ImageDataSource {
     }
 
 
-    private Image cursorToImage(Cursor cursor) {
-        Image image = new Image();
-        image.setId(cursor.getString(0));
-        image.setTitle(cursor.getString(1));
-        image.setDescription(cursor.getString(2));
-        image.setDatetime(cursor.getString(3));
-        image.setCover(cursor.getString(4));
-        image.setUps(cursor.getInt(5));
-        image.setDowns(cursor.getInt(6));
-        image.setScore(cursor.getInt(7));
-        image.setIsAlbum(cursor.getInt(8)==1);
-
-        return image;
-    }
-
 
     /**
      * Delete Single Image
@@ -170,6 +155,23 @@ public class ImageDataSource {
      */
     public void clearAllUser() {
         database.delete(DatabaseHelper.TABLE_IMAGE, null, null);
+    }
+
+
+
+    private Image cursorToImage(Cursor cursor) {
+        Image image = new Image();
+        image.setId(cursor.getString(0));
+        image.setTitle(cursor.getString(1));
+        image.setDescription(cursor.getString(2));
+        image.setDatetime(cursor.getString(3));
+        image.setCover(cursor.getString(4));
+        image.setUps(cursor.getInt(5));
+        image.setDowns(cursor.getInt(6));
+        image.setScore(cursor.getInt(7));
+        image.setIsAlbum(cursor.getInt(8)==1);
+
+        return image;
     }
 
 }

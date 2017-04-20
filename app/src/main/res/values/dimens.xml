@@ -3,6 +3,12 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+
     <dimen name="item_image_title_size">12sp</dimen>
     <dimen name="item_image_title_padding">5dp</dimen>
+
+
+    <dimen name="navHeaderImageMarginTop">25dp</dimen>
+    <dimen name="navHeaderImageSize">20dp</dimen>
+    <dimen name="navHeaderContentPadding">16dp</dimen>
 </resources>

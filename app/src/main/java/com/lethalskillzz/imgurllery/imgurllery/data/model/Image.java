@@ -1,5 +1,8 @@
 package com.lethalskillzz.imgurllery.imgurllery.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +10,20 @@ import com.google.gson.annotations.SerializedName;
  * Created by ibrahimabdulkadir on 16/04/2017.
  */
 
-public class Image {
+public class Image implements Parcelable {
+
+
+    public static final Creator<Image> CREATOR = new Creator<Image>() {
+        @Override
+        public Image createFromParcel(Parcel in) {
+            return new Image(in);
+        }
+
+        @Override
+        public Image[] newArray(int size) {
+            return new Image[size];
+        }
+    };
 
     @SerializedName("id")
     @Expose
@@ -46,6 +62,9 @@ public class Image {
     private Boolean isAlbum;
 
 
+    public Image () {
+
+    }
 
     public String getId() {
         return id;
@@ -122,5 +141,35 @@ public class Image {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    protected Image(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        description = in.readString();
+        datetime = in.readString();
+        cover = in.readString();
+        ups = in.readInt();
+        downs = in.readInt();
+        score = in.readInt();
+        isAlbum = Boolean.valueOf(in.readString());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(cover);
+        dest.writeString(cover);
+        dest.writeInt(ups);
+        dest.writeInt(downs);
+        dest.writeInt(score);
+        dest.writeByte((byte) (isAlbum ? 1 : 0));
+    }
 
 }

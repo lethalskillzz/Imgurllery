@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/filter_window_day"
+            android:title="@string/filter_day"
+            android:checked="true"
+            />
+
+        <item
+            android:id="@+id/filter_window_week"
+            android:title="@string/filter_week" />
+
+        <item
+            android:id="@+id/filter_window_month"
+            android:title="@string/filter_month" />
+
+        <item
+            android:id="@+id/filter_window_year"
+            android:title="@string/filter_year" />
+
+        <item
+            android:id="@+id/filter_window_all"
+            android:title="@string/filter_all" />
+
+    </group>
+
+</menu>

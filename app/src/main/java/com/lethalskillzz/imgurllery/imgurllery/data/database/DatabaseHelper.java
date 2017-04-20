@@ -33,8 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Database creation sql statement
     private static final String DATABASE_CREATE_IMAGE = "CREATE TABLE " + TABLE_IMAGE + "( _id INTEGER PRIMARY KEY, " +
-            COLUMN_ID + " TEXT NOT NULL, " + COLUMN_TITLE + " TEXT NOT NULL, " + COLUMN_DESCRIPTION + " TEXT NOT NULL , " +
-            COLUMN_DATE_TIME + " TEXT NOT NULL, " + COLUMN_COVER + " TEXT NOT NULL, " + COLUMN_UPS + " INTEGER NOT NULL, " +
+            COLUMN_ID + " TEXT UNIQUE NOT NULL, " + COLUMN_TITLE + " TEXT NOT NULL, " + COLUMN_DESCRIPTION + " TEXT, " +
+            COLUMN_DATE_TIME + " TEXT NOT NULL, " + COLUMN_COVER + " TEXT, " + COLUMN_UPS + " INTEGER NOT NULL, " +
             COLUMN_DOWNS + " INTEGER NOT NULL, " + COLUMN_SCORE + " INTEGER NOT NULL, " + COLUMN_IS_ALBUM + " INTEGER NOT NULL );";
 
 

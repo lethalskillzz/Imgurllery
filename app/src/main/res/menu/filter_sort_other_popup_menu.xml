@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/filter_sort_other_viral"
+                    android:title="@string/filter_viral"
+                    android:checked="true"
+                    />
+
+                <item
+                    android:id="@+id/filter_sort_other_top"
+                    android:title="@string/filter_top" />
+
+                <item
+                    android:id="@+id/filter_sort_other_time"
+                    android:title="@string/filter_time" />
+
+        </group>
+</menu>

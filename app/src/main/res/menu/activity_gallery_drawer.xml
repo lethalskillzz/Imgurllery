@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_hot"
+            android:checked="true"
+            android:icon="@drawable/ic_hot"
+            android:title="@string/nav_hot" />
+
+        <item
+            android:id="@+id/nav_top"
+            android:icon="@drawable/ic_top"
+            android:title="@string/nav_top" />
+
+        <item
+            android:id="@+id/nav_user"
+            android:icon="@drawable/ic_user"
+            android:title="@string/nav_user" />
+
+    </group>
+
+    <item android:title="@string/app_name">
+        <menu>
+
+            <item
+                android:id="@+id/nav_list"
+                android:icon="@drawable/ic_list"
+                android:title="ListView" />
+
+            <item
+                android:id="@+id/nav_grid"
+                android:icon="@drawable/ic_grid"
+                android:title="GridView" />
+
+            <item
+                android:id="@+id/nav_staggered_grid"
+                android:icon="@drawable/ic_staggered_grid"
+                android:title="Staggered GridView" />
+
+        </menu>
+    </item>
+
+    <item android:title="Info">
+        <menu>
+
+
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_about"
+                android:title="@string/nav_about" />
+
+        </menu>
+    </item>
+</menu>
