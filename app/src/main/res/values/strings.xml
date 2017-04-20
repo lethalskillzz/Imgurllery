@@ -18,29 +18,7 @@
     <string name="nav_about">About</string>
 
 
-    <!-- Filters -->
-    <string name="filter_usersub_newest">User Submitted &#8226; Newest</string>
-    <string name="filter_usersub_rising">User Submitted &#8226; Rising</string>
-    <string name="filter_usersub_popularity">User Submitted &#8226; Popularity</string>
-    <string name="filter_viral_newest">Most Viral &#8226; Newest</string>
-    <string name="filter_viral_scoring_day">Most Viral &#8226; Highest Scoring &#8226; Day</string>
-    <string name="filter_viral_scoring_week">Most Viral &#8226; Highest Scoring &#8226; Week</string>
-    <string name="filter_viral_scoring_month">Most Viral &#8226; Highest Scoring &#8226; Month</string>
-    <string name="filter_viral_scoring_year">Most Viral &#8226; Highest Scoring &#8226; Year</string>
-    <string name="filter_viral_scoring_all">Most Viral &#8226; Highest Scoring &#8226; All</string>
-    <string name="filter_viral_popularity">Most Viral &#8226; Popularity</string>
-    <string name="filter_newest">Newest</string>
-    <string name="filter_top_day">Top &#8226; Day</string>
-    <string name="filter_top_week">Top &#8226; Week</string>
-    <string name="filter_top_month">Top &#8226; Month</string>
-    <string name="filter_top_year">Top &#8226; Year</string>
-    <string name="filter_top_all">Top &#8226; All</string>
-    <string name="filter_popularity">Popularity</string>
-    <string name="filter_scoring_day">Highest Scoring &#8226; Day</string>
-    <string name="filter_scoring_week">Highest Scoring &#8226; Week</string>
-    <string name="filter_scoring_month">Highest Scoring &#8226; Month</string>
-    <string name="filter_scoring_year">Highest Scoring &#8226; Year</string>
-    <string name="filter_scoring_all">Highest Scoring &#8226; All</string>
+
     <string name="nav_user">User</string>
     <string name="nav_top">Top</string>
     <string name="nav_hot">Hot</string>
@@ -55,6 +33,38 @@
     <string name="filter_year">Year</string>
     <string name="filter_all">All</string>
     <string name="filter_show_viral">Show Viral</string>
+
+
+    <!-- Subtitle -->
+    <string name="subtitle_hot_viral">Hot &#8226; Viral</string>
+    <string name="subtitle_hot_top">Hot &#8226; Top</string>
+    <string name="subtitle_hot_time">Hot &#8226; Time</string>
+
+
+    <string name="subtitle_top_viral_day">Top &#8226; Viral &#8226; Day</string>
+    <string name="subtitle_top_viral_week">Top &#8226; Viral &#8226; Week</string>
+    <string name="subtitle_top_viral_month">Top &#8226; Viral &#8226; Month</string>
+    <string name="subtitle_top_viral_year">Top &#8226; Viral &#8226; Year</string>
+    <string name="subtitle_top_viral_all">Top &#8226; Viral &#8226; All</string>
+
+    <string name="subtitle_top_top_day">Top &#8226; Top &#8226; Day</string>
+    <string name="subtitle_top_top_week">Top &#8226; Top &#8226; Week</string>
+    <string name="subtitle_top_top_month">Top &#8226; Top &#8226; Month</string>
+    <string name="subtitle_top_top_year">Top &#8226; Top &#8226; Year</string>
+    <string name="subtitle_top_top_all">Top &#8226; Top &#8226; All</string>
+
+    <string name="subtitle_top_time_day">Top &#8226; Time &#8226; Day</string>
+    <string name="subtitle_top_time_week">Top &#8226; Time &#8226; Week</string>
+    <string name="subtitle_top_time_month">Top &#8226; Time &#8226; Month</string>
+    <string name="subtitle_top_time_year">Top &#8226; Time &#8226; Year</string>
+    <string name="subtitle_top_time_all">Top &#8226; Time &#8226; All</string>
+
+
+    <string name="subtitle_user_viral">User &#8226; Viral</string>
+    <string name="subtitle_user_top">User &#8226; Top</string>
+    <string name="subtitle_user_time">User &#8226; Time</string>
+    <string name="subtitle_user_rising">User &#8226; Rising</string>
+    <string name="filter_sort">Sort</string>
 
 
 </resources>

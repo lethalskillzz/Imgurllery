@@ -35,7 +35,20 @@ import butterknife.ButterKnife;
 
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.CURRENT_NAV_KEY;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.IMAGE_TEMP_KEY;
-import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.ORDER_TYPE_KEY;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.ORDER_ROUTE_KEY;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SECTION_HOT;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SECTION_TOP;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SECTION_USER;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SHOW_VIRAL_KEY;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SORT_RISING;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SORT_TIME;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SORT_TOP;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SORT_VIRAL;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.WINDOW_ALL;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.WINDOW_DAY;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.WINDOW_MONTH;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.WINDOW_WEEK;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.WINDOW_YEAR;
 
 public class GalleryActivity extends AppCompatActivity implements GalleryMvpContract.View {
 
@@ -45,9 +58,10 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
     private GalleryAdapter galleryAdapter;
 
     private ActionBar mActionBar;
-    private String mOrderType;
+    private String mOrderRoute;
     private List<Image> mImages;
     private int navItemId;
+    private boolean showViral;
 
 
     @BindView(R.id.gallery_drawer_layout)
@@ -80,8 +94,9 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
         cd = new ConnectionDetector(this);
 
         mImages = new ArrayList<>();
-        mOrderType = "popularity";
+        mOrderRoute = SECTION_HOT+SORT_VIRAL;
         navItemId = R.id.nav_hot;
+        showViral = true;
 
         refreshActionBar();
 
@@ -101,12 +116,15 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
             if (savedInstanceState.containsKey(CURRENT_NAV_KEY)) {
                 navItemId = savedInstanceState.getInt(CURRENT_NAV_KEY);
             }
-            if (savedInstanceState.containsKey(ORDER_TYPE_KEY)) {
-                mOrderType = savedInstanceState.getString(ORDER_TYPE_KEY, "popularity");
+            if (savedInstanceState.containsKey(ORDER_ROUTE_KEY)) {
+                mOrderRoute = savedInstanceState.getString(ORDER_ROUTE_KEY, SECTION_HOT+SORT_VIRAL);
             }
             if (savedInstanceState.containsKey(IMAGE_TEMP_KEY)) {
                 mImages = savedInstanceState.getParcelableArrayList(IMAGE_TEMP_KEY);
                 galleryAdapter.setResults(mImages);
+            }
+            if (savedInstanceState.containsKey(SHOW_VIRAL_KEY)) {
+                showViral = savedInstanceState.getBoolean(SHOW_VIRAL_KEY);
             }
 
             refreshActionBar();
@@ -114,7 +132,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
         } else {
             if (cd.isConnectingToInternet()) {
 
-                presenter.getGallery(mOrderType);
+                presenter.getGallery(mOrderRoute);
 
             } else {
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -176,9 +194,10 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
         super.onSaveInstanceState(outState);
 
         if (mImages != null) {
-            outState.putString(ORDER_TYPE_KEY, mOrderType);
+            outState.putString(ORDER_ROUTE_KEY, mOrderRoute);
             outState.putInt(CURRENT_NAV_KEY, navItemId);
             outState.putParcelableArrayList(IMAGE_TEMP_KEY, (ArrayList<? extends Parcelable>) mImages);
+            outState.putBoolean(SHOW_VIRAL_KEY, showViral);
         }
     }
 
@@ -215,35 +234,105 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
     }
 
 
-    private void refreshActionBar() {
-//        if (mActionBar != null) {
-//            mActionBar.setSubtitle((mOrderType.equals("popularity")
-//                    ? getString(R.string.subtitle_most_popular)
-//                    : getString(R.string.subtitle_top_rated)));
-//            mActionBar.invalidateOptionsMenu();
-//        }
+    private String currentTitle(String title) {
+
+        switch(title) {
+
+            case SECTION_HOT+SORT_VIRAL:
+                title = getString(R.string.subtitle_hot_viral);
+                break;
+            case SECTION_HOT+SORT_TOP:
+                title = getString(R.string.subtitle_hot_top);
+                break;
+            case SECTION_HOT+SORT_TIME:
+                title = getString(R.string.subtitle_hot_time);
+                break;
+
+            case SECTION_TOP+SORT_VIRAL+WINDOW_DAY:
+                title = getString(R.string.subtitle_top_viral_day);
+                break;
+            case SECTION_TOP+SORT_VIRAL+WINDOW_WEEK:
+                title = getString(R.string.subtitle_top_viral_week);
+                break;
+            case SECTION_TOP+SORT_VIRAL+WINDOW_MONTH:
+                title = getString(R.string.subtitle_top_viral_month);
+                break;
+            case SECTION_TOP+SORT_VIRAL+WINDOW_YEAR:
+                title = getString(R.string.subtitle_top_viral_year);
+                break;
+            case SECTION_TOP+SORT_VIRAL+WINDOW_ALL:
+                title = getString(R.string.subtitle_top_viral_all);
+                break;
+
+            case SECTION_TOP+SORT_TOP+WINDOW_DAY:
+                title = getString(R.string.subtitle_top_top_day);
+                break;
+            case SECTION_TOP+SORT_TOP+WINDOW_WEEK:
+                title = getString(R.string.subtitle_top_top_week);
+                break;
+            case SECTION_TOP+SORT_TOP+WINDOW_MONTH:
+                title = getString(R.string.subtitle_top_top_month);
+                break;
+            case SECTION_TOP+SORT_TOP+WINDOW_YEAR:
+                title = getString(R.string.subtitle_top_top_year);
+                break;
+            case SECTION_TOP+SORT_TOP+WINDOW_ALL:
+                title = getString(R.string.subtitle_top_top_all);
+                break;
+
+            case SECTION_TOP+SORT_TIME+WINDOW_DAY:
+                title = getString(R.string.subtitle_top_time_day);
+                break;
+            case SECTION_TOP+SORT_TIME+WINDOW_WEEK:
+                title = getString(R.string.subtitle_top_time_week);
+                break;
+            case SECTION_TOP+SORT_TIME+WINDOW_MONTH:
+                title = getString(R.string.subtitle_top_time_month);
+                break;
+            case SECTION_TOP+SORT_TIME+WINDOW_YEAR:
+                title = getString(R.string.subtitle_top_time_year);
+                break;
+            case SECTION_TOP+SORT_TIME+WINDOW_ALL:
+                title = getString(R.string.subtitle_top_time_all);
+                break;
+
+            case SECTION_USER+SORT_VIRAL:
+                title = getString(R.string.subtitle_user_viral);
+                break;
+            case SECTION_USER+SORT_TOP:
+                title = getString(R.string.subtitle_user_top);
+                break;
+            case SECTION_USER+SORT_TIME:
+                title = getString(R.string.subtitle_user_time);
+                break;
+            case SECTION_USER+SORT_RISING:
+                title = getString(R.string.subtitle_user_rising);
+                break;
+        }
+
+        return title;
     }
 
-    private void toggleOrderType(MenuItem item) {
+    private void refreshActionBar() {
+        if (mActionBar != null) {
 
-//        if (cd.isConnectingToInternet()) {
-//
-//            if (item.getTitle().equals(getString(R.string.toggle_popular))) {
-//                item.setTitle(getString(R.string.toggle_top_rated));
-//                mOrderType = "popularity";
-//            } else {
-//                item.setTitle(getString(R.string.toggle_popular));
-//                mOrderType = "top_rating";
-//            }
-//
-//            presenter.getPage(mOrderType);
-//
-//            refreshActionBar();
-//
-//        } else {
-//            mSwipeRefreshLayout.setRefreshing(false);
-//            showError(getString(R.string.error_no_internet));
-//        }
+            mActionBar.setSubtitle(currentTitle(mOrderRoute));
+            mActionBar.invalidateOptionsMenu();
+        }
+    }
+
+    private void toggleOrderRoute() {
+
+        if (cd.isConnectingToInternet()) {
+
+            presenter.getGallery(mOrderRoute);
+
+            refreshActionBar();
+
+        } else {
+            mSwipeRefreshLayout.setRefreshing(false);
+            showError(getString(R.string.error_no_internet));
+        }
     }
 
     private  void setupViews() {
@@ -259,7 +348,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
             public void onRefresh() {
                 if (cd.isConnectingToInternet()) {
 
-                    presenter.getGallery(mOrderType);
+                    presenter.getGallery(mOrderRoute);
 
                 } else {
                     mSwipeRefreshLayout.setRefreshing(false);
@@ -280,13 +369,6 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
             public boolean onNavigationItemSelected(MenuItem item) {
 
                 switch (item.getItemId()) {
-                    case R.id.nav_top:
-                        navItemId = R.id.nav_top;
-                        break;
-
-                    case R.id.nav_user:
-                        navItemId = R.id.nav_user;
-                        break;
 
                     case R.id.nav_about:
                         //showAbout();
@@ -299,9 +381,31 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
                     case R.id.nav_staggered_grid:
                         break;
 
+                    case R.id.nav_top: {
+                        mOrderRoute = SECTION_TOP+SORT_VIRAL+WINDOW_ALL;
+                        refreshActionBar();
+                        navItemId = R.id.nav_top;
+                        toggleOrderRoute();
+                    }
+                    break;
+
+                    case R.id.nav_user: {
+                        mOrderRoute = SECTION_USER+SORT_VIRAL;
+                        refreshActionBar();
+                        navItemId = R.id.nav_user;
+                        toggleOrderRoute();
+                    }
+                    break;
+
                     default:
-                    case R.id.nav_hot:
+                    case R.id.nav_hot: {
+                        mOrderRoute = SECTION_HOT+SORT_VIRAL;
+                        refreshActionBar();
                         navItemId = R.id.nav_hot;
+                        toggleOrderRoute();
+                    }
+                    break;
+
                 }
 
                 mDrawer.closeDrawer(GravityCompat.START);
@@ -319,29 +423,35 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
             if(navItemId == R.id.nav_user) {
 
-                popup.getMenuInflater().inflate(R.menu.filter_sort_user_popup_menu, popup.getMenu());
+                popup.getMenuInflater().inflate(R.menu.filter_show_viral_popup_menu, popup.getMenu());
+
+                MenuItem item = popup.getMenu().findItem(R.id.filter_show_viral);
+                item.setChecked(showViral);
 
             } else {
-
                 popup.getMenuInflater().inflate(R.menu.filter_sort_other_popup_menu, popup.getMenu());
             }
 
-        } else if(viewId == R.id.filter_sort_other_viral || viewId == R.id.filter_sort_other_top ||
-                viewId == R.id.filter_sort_other_time) {
+        } else if(viewId == R.id.filter_sort_other_viral) {
 
-            if(navItemId == R.id.nav_hot) {
+            mOrderRoute = SECTION_TOP+SORT_VIRAL;
+            popup.getMenuInflater().inflate(R.menu.filter_window_popup_menu, popup.getMenu());
 
-            } else {
-                popup.getMenuInflater().inflate(R.menu.filter_window_popup_menu, popup.getMenu());
-            }
+        } else if(viewId == R.id.filter_sort_other_top) {
 
-        } else if(viewId == R.id.filter_sort_user_viral || viewId == R.id.filter_sort_user_top ||
-                viewId == R.id.filter_sort_user_time || viewId == R.id.filter_sort_user_rising) {
+            mOrderRoute = SECTION_TOP+SORT_TOP;
+            popup.getMenuInflater().inflate(R.menu.filter_window_popup_menu, popup.getMenu());
 
-            popup.getMenuInflater().inflate(R.menu.filter_show_viral_popup_menu, popup.getMenu());
+        }else if(viewId == R.id.filter_sort_other_time) {
+
+            mOrderRoute = SECTION_TOP+SORT_TIME;
+            popup.getMenuInflater().inflate(R.menu.filter_window_popup_menu, popup.getMenu());
+
+        } else if(viewId == R.id.filter_show_viral_sort) {
+
+            popup.getMenuInflater().inflate(R.menu.filter_sort_user_popup_menu, popup.getMenu());
 
         } else {
-
 
         }
 
@@ -350,36 +460,113 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
 
-                    case R.id.filter_sort_other_viral:
-                        showPopupMenu(R.id.filter_sort_other_viral);
-                        break;
+                    case R.id.filter_sort_other_viral: {
+                        if(navItemId == R.id.nav_hot) {
+                            mOrderRoute = SECTION_HOT+SORT_VIRAL;
+                            refreshActionBar();
+                            toggleOrderRoute();
+                        } else {
+                            showPopupMenu(R.id.filter_sort_other_viral);
+                        }
+                    }
+                    break;
 
-                    case R.id.filter_sort_other_top:
-                        showPopupMenu(R.id.filter_sort_other_top);
-                        break;
+                    case R.id.filter_sort_other_top: {
+                        if (navItemId == R.id.nav_hot) {
+                            mOrderRoute = SECTION_HOT+SORT_TOP;
+                            refreshActionBar();
+                            toggleOrderRoute();
+                        } else {
+                            showPopupMenu(R.id.filter_sort_other_top);
+                        }
+                    }
+                    break;
 
-                    case R.id.filter_sort_other_time:
-                        showPopupMenu(R.id.filter_sort_other_time);
-                        break;
+                    case R.id.filter_sort_other_time: {
+                        if (navItemId == R.id.nav_hot) {
+                            mOrderRoute = SECTION_HOT+SORT_TIME;
+                            refreshActionBar();
+                            toggleOrderRoute();
+                        } else {
+                            showPopupMenu(R.id.filter_sort_other_time);
+                        }
+                    }
+                    break;
 
-                    case R.id.filter_sort_user_viral:
-                        showPopupMenu(R.id.filter_sort_user_viral);
-                        break;
+                    case R.id.filter_window_day: {
+                        mOrderRoute = mOrderRoute + WINDOW_DAY;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
 
-                    case R.id.filter_sort_user_top:
-                        showPopupMenu(R.id.filter_sort_user_top);
-                        break;
+                    case R.id.filter_window_week: {
+                        mOrderRoute = mOrderRoute + WINDOW_WEEK;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
 
-                    case R.id.filter_sort_user_time:
-                        showPopupMenu(R.id.filter_sort_user_time);
-                        break;
+                    case R.id.filter_window_month: {
+                        mOrderRoute = mOrderRoute + WINDOW_MONTH;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
 
-                    case R.id.filter_sort_user_rising:
-                        showPopupMenu(R.id.filter_sort_user_rising);
-                        break;
+                    case R.id.filter_window_year: {
+                        mOrderRoute = mOrderRoute + WINDOW_YEAR;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
 
-                    case R.id.filter_show_viral:
-                        showPopupMenu(R.id.filter_show_viral);
+                    case R.id.filter_window_all: {
+                        mOrderRoute = mOrderRoute + WINDOW_ALL;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
+
+                    case R.id.filter_sort_user_viral: {
+                        mOrderRoute = SECTION_USER + SORT_VIRAL;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
+
+                    case R.id.filter_sort_user_top: {
+                        mOrderRoute = SECTION_USER + SORT_TOP;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
+
+                    case R.id.filter_sort_user_time: {
+                        mOrderRoute = SECTION_USER + SORT_TIME;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
+
+                    case R.id.filter_sort_user_rising: {
+                        mOrderRoute = SECTION_USER + SORT_RISING;
+                        refreshActionBar();
+                        toggleOrderRoute();
+                    }
+                    break;
+
+                    case R.id.filter_show_viral: {
+
+                        showViral = !showViral;
+                        mOrderRoute = mOrderRoute+"?showViral="+showViral;
+                        toggleOrderRoute();
+
+                    }
+                    break;
+
+                    case R.id.filter_show_viral_sort:
+                        showPopupMenu(R.id.filter_show_viral_sort);
                         break;
 
                     default:

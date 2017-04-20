@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <group android:checkableBehavior="single">
-
         <item
             android:id="@+id/filter_sort_user_viral"
             android:title="@string/filter_viral"
-            android:checked="true"
             />
 
         <item
             android:id="@+id/filter_sort_user_top"
-            android:title="@string/filter_top" />
+            android:title="@string/filter_top"
+            />
 
         <item
             android:id="@+id/filter_sort_user_time"
-            android:title="@string/filter_time" />
+            android:title="@string/filter_time"
+            />
 
         <item
             android:id="@+id/filter_sort_user_rising"
-            android:title="@string/filter_rising" />
-
-        </group>
+            android:title="@string/filter_rising"
+            />
 
 </menu>
