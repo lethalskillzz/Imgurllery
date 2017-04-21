@@ -60,21 +60,39 @@ public class AppConfig {
     public static final String WINDOW_ALL = "/all";
 
 
+    // Get viral true
+    public static final String SHOW_VIRAL_TRUE = "?showViral=true";
+
+    // Get viral false
+    public static final String SHOW_VIRAL_FALSE = "?showViral=false";
+
 
     // Imgur image url
     public static final String BASE_IMG_URL = "https://i.imgur.com/";
 
 
     // Imgur API Key
-    public static final String API_KEY = "<YOUR API KEY>";
+    public static final String API_KEY = "<API Key>";
+    // User Agent
+    public static final String USER_AGENT = "lethalskillzz.com";
+
+
+    public static final String MEDIUM_IMG_SUFFIX = "m.jpg";
+    public static final String THUMBNAIL_IMG_SUFFIX = "t.jpg";
 
 
     public static final String ORDER_ROUTE_KEY = "orderRouteKey";
     public static final String IMAGE_TEMP_KEY = "imageTempKey";
     public static final String SHOW_VIRAL_KEY = "showViralKey";
     public static final String CURRENT_NAV_KEY = "currentNavKey";
+    public static final String CURRENT_LAYOUT_KEY = "currentLayout";
 
-    public static final String CLICK_GRID = "clickGrid";
+
+    public static final String LAYOUT_GRID = "layoutGrid";
+    public static final String LAYOUT_STAGGERED_GRID = "layoutStaggeredGrid";
+    public static final String LAYOUT_LIST = "layoutList";
+
+    public static final String CLICK_IMAGE = "clickImage";
 }
 
 

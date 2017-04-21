@@ -9,15 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.lethalskillzz.imgurllery.R;
 import com.lethalskillzz.imgurllery.imgurllery.data.model.Image;
 import com.lethalskillzz.imgurllery.imgurllery.presentation.detail.DetailsActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.BASE_IMG_URL;
-import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.CLICK_GRID;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.CLICK_IMAGE;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.MEDIUM_IMG_SUFFIX;
 
 /**
  * Created by ibrahimabdulkadir on 18/04/2017.
@@ -43,12 +44,17 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         Image image = images.get(position);
         holder.title.setText(image.getTitle());
         if(!image.getIsAlbum())
-            Glide.with(mContext).load(BASE_IMG_URL+image.getId()).into(holder.image);
+            Picasso.with(mContext).load(BASE_IMG_URL+image.getId()+MEDIUM_IMG_SUFFIX)
+                    .placeholder(R.drawable.large_placeholder).into(holder.image);
+            //Glide.with(mContext).load(BASE_IMG_URL+image.getId()+MEDIUM_IMG_SUFFIX).into(holder.image);
         else
-            Glide.with(mContext).load(BASE_IMG_URL+image.getCover()).into(holder.image);
+            Picasso.with(mContext).load(BASE_IMG_URL+image.getCover()+MEDIUM_IMG_SUFFIX)
+                    .placeholder(R.drawable.large_placeholder).into(holder.image);
+            //Glide.with(mContext).load(BASE_IMG_URL+image.getCover()+MEDIUM_IMG_SUFFIX).into(holder.image);
 
     }
 
@@ -80,7 +86,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), DetailsActivity.class);
-            intent.putExtra(CLICK_GRID, images.get(getAdapterPosition()));
+            intent.putExtra(CLICK_IMAGE, images.get(getAdapterPosition()));
             view.getContext().startActivity(intent);
         }
     }

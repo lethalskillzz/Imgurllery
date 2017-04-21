@@ -19,28 +19,28 @@
 
     </group>
 
-    <item android:title="@string/app_name">
+    <item android:title="@string/nav_layout">
         <menu>
 
             <item
                 android:id="@+id/nav_list"
                 android:icon="@drawable/ic_list"
-                android:title="ListView" />
+                android:title="@string/nav_list" />
 
             <item
                 android:id="@+id/nav_grid"
                 android:icon="@drawable/ic_grid"
-                android:title="GridView" />
+                android:title="@string/nav_grid" />
 
             <item
                 android:id="@+id/nav_staggered_grid"
                 android:icon="@drawable/ic_staggered_grid"
-                android:title="Staggered GridView" />
+                android:title="@string/nav_staggered_grid" />
 
         </menu>
     </item>
 
-    <item android:title="Info">
+    <item android:title="@string/nav_info">
         <menu>
 
 

@@ -13,8 +13,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,13 +35,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.CURRENT_LAYOUT_KEY;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.CURRENT_NAV_KEY;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.IMAGE_TEMP_KEY;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.LAYOUT_GRID;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.LAYOUT_LIST;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.LAYOUT_STAGGERED_GRID;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.ORDER_ROUTE_KEY;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SECTION_HOT;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SECTION_TOP;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SECTION_USER;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SHOW_VIRAL_FALSE;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SHOW_VIRAL_KEY;
+import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SHOW_VIRAL_TRUE;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SORT_RISING;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SORT_TIME;
 import static com.lethalskillzz.imgurllery.imgurllery.manager.AppConfig.SORT_TOP;
@@ -62,6 +70,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
     private List<Image> mImages;
     private int navItemId;
     private boolean showViral;
+    private String recyclerLayout;
 
 
     @BindView(R.id.gallery_drawer_layout)
@@ -97,6 +106,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
         mOrderRoute = SECTION_HOT+SORT_VIRAL;
         navItemId = R.id.nav_hot;
         showViral = true;
+        recyclerLayout = LAYOUT_LIST;
 
         refreshActionBar();
 
@@ -110,7 +120,6 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
         rView.setAdapter(galleryAdapter);
 
         refreshText.setVisibility(View.GONE);
-
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(CURRENT_NAV_KEY)) {
@@ -126,8 +135,12 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
             if (savedInstanceState.containsKey(SHOW_VIRAL_KEY)) {
                 showViral = savedInstanceState.getBoolean(SHOW_VIRAL_KEY);
             }
+            if (savedInstanceState.containsKey(CURRENT_LAYOUT_KEY)) {
+                recyclerLayout = savedInstanceState.getString(CURRENT_LAYOUT_KEY);
+            }
 
             refreshActionBar();
+            setRecyclerLayout();
 
         } else {
             if (cd.isConnectingToInternet()) {
@@ -198,18 +211,13 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
             outState.putInt(CURRENT_NAV_KEY, navItemId);
             outState.putParcelableArrayList(IMAGE_TEMP_KEY, (ArrayList<? extends Parcelable>) mImages);
             outState.putBoolean(SHOW_VIRAL_KEY, showViral);
+            outState.putString(CURRENT_LAYOUT_KEY, recyclerLayout);
         }
     }
 
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-//        if (!mOrderType.equals("popularity")) {
-//            menu.findItem(R.id.menu_toggle).setTitle(R.string.toggle_popular);
-//        } else {
-//            menu.findItem(R.id.menu_toggle).setTitle(R.string.toggle_top_rated);
-//        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -296,16 +304,31 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
                 title = getString(R.string.subtitle_top_time_all);
                 break;
 
-            case SECTION_USER+SORT_VIRAL:
+            case SECTION_USER+SORT_VIRAL+SHOW_VIRAL_TRUE:
                 title = getString(R.string.subtitle_user_viral);
                 break;
-            case SECTION_USER+SORT_TOP:
+            case SECTION_USER+SORT_VIRAL+SHOW_VIRAL_FALSE:
+                title = getString(R.string.subtitle_user_viral);
+                break;
+
+            case SECTION_USER+SORT_TOP+SHOW_VIRAL_TRUE:
                 title = getString(R.string.subtitle_user_top);
                 break;
-            case SECTION_USER+SORT_TIME:
+            case SECTION_USER+SORT_TOP+SHOW_VIRAL_FALSE:
+                title = getString(R.string.subtitle_user_top);
+                break;
+
+            case SECTION_USER+SORT_TIME+SHOW_VIRAL_TRUE:
                 title = getString(R.string.subtitle_user_time);
                 break;
-            case SECTION_USER+SORT_RISING:
+            case SECTION_USER+SORT_TIME+SHOW_VIRAL_FALSE:
+                title = getString(R.string.subtitle_user_time);
+                break;
+
+            case SECTION_USER+SORT_RISING+SHOW_VIRAL_TRUE:
+                title = getString(R.string.subtitle_user_rising);
+                break;
+            case SECTION_USER+SORT_RISING+SHOW_VIRAL_FALSE:
                 title = getString(R.string.subtitle_user_rising);
                 break;
         }
@@ -337,10 +360,9 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
     private  void setupViews() {
 
-        rView.addItemDecoration(new SpacesItemDecoration(10));
-        GridLayoutManager gLayout = new GridLayoutManager(this, 2);
-        rView.setLayoutManager(gLayout);
         rView.setHasFixedSize(true);
+        setRecyclerLayout();
+        rView.addItemDecoration(new SpacesItemDecoration(10));
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -373,35 +395,52 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
                     case R.id.nav_about:
                         //showAbout();
                         break;
-                    case R.id.nav_list:
-                        break;
-                    case R.id.nav_grid:
-                        break;
 
-                    case R.id.nav_staggered_grid:
-                        break;
+                    case R.id.nav_list: {
+                        recyclerLayout = LAYOUT_LIST;
+                        setRecyclerLayout();
+                    }
+                    break;
+
+                    case R.id.nav_grid: {
+                        recyclerLayout = LAYOUT_GRID;
+                        setRecyclerLayout();
+                    }
+                    break;
+
+                    case R.id.nav_staggered_grid:{
+                        recyclerLayout = LAYOUT_STAGGERED_GRID;
+                        setRecyclerLayout();
+                    }
+                    break;
 
                     case R.id.nav_top: {
+                        navItemId = R.id.nav_top;
                         mOrderRoute = SECTION_TOP+SORT_VIRAL+WINDOW_ALL;
                         refreshActionBar();
-                        navItemId = R.id.nav_top;
                         toggleOrderRoute();
                     }
                     break;
 
                     case R.id.nav_user: {
-                        mOrderRoute = SECTION_USER+SORT_VIRAL;
-                        refreshActionBar();
                         navItemId = R.id.nav_user;
+
+                        mOrderRoute = SECTION_USER+SORT_VIRAL;
+                        if(showViral)
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_TRUE;
+                        else
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_FALSE;
+
+                        refreshActionBar();
                         toggleOrderRoute();
                     }
                     break;
 
                     default:
                     case R.id.nav_hot: {
+                        navItemId = R.id.nav_hot;
                         mOrderRoute = SECTION_HOT+SORT_VIRAL;
                         refreshActionBar();
-                        navItemId = R.id.nav_hot;
                         toggleOrderRoute();
                     }
                     break;
@@ -530,6 +569,11 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
                     case R.id.filter_sort_user_viral: {
                         mOrderRoute = SECTION_USER + SORT_VIRAL;
+                        if(showViral)
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_TRUE;
+                        else
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_FALSE;
+
                         refreshActionBar();
                         toggleOrderRoute();
                     }
@@ -537,6 +581,11 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
                     case R.id.filter_sort_user_top: {
                         mOrderRoute = SECTION_USER + SORT_TOP;
+                        if(showViral)
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_TRUE;
+                        else
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_FALSE;
+
                         refreshActionBar();
                         toggleOrderRoute();
                     }
@@ -544,6 +593,11 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
                     case R.id.filter_sort_user_time: {
                         mOrderRoute = SECTION_USER + SORT_TIME;
+                        if(showViral)
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_TRUE;
+                        else
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_FALSE;
+
                         refreshActionBar();
                         toggleOrderRoute();
                     }
@@ -551,6 +605,11 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
                     case R.id.filter_sort_user_rising: {
                         mOrderRoute = SECTION_USER + SORT_RISING;
+                        if(showViral)
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_TRUE;
+                        else
+                            mOrderRoute = mOrderRoute+SHOW_VIRAL_FALSE;
+
                         refreshActionBar();
                         toggleOrderRoute();
                     }
@@ -559,7 +618,14 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
                     case R.id.filter_show_viral: {
 
                         showViral = !showViral;
-                        mOrderRoute = mOrderRoute+"?showViral="+showViral;
+
+                        if(showViral) {
+                            mOrderRoute = mOrderRoute.replace(mOrderRoute.substring(mOrderRoute.length() - 16), "");
+                            mOrderRoute = mOrderRoute + SHOW_VIRAL_TRUE;
+                        } else {
+                            mOrderRoute = mOrderRoute.replace(mOrderRoute.substring(mOrderRoute.length() - 15), "");
+                            mOrderRoute = mOrderRoute + SHOW_VIRAL_FALSE;
+                        }
                         toggleOrderRoute();
 
                     }
@@ -577,6 +643,27 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
         });
 
         popup.show();//showing popup menu
+    }
+
+    private void setRecyclerLayout() {
+
+        switch (recyclerLayout) {
+
+            case LAYOUT_LIST:
+                rView.setLayoutManager(new LinearLayoutManager(this));
+                break;
+
+            case LAYOUT_GRID:
+                rView.setLayoutManager(new GridLayoutManager(this, 2));
+                break;
+
+            case LAYOUT_STAGGERED_GRID:
+                rView.setLayoutManager(new StaggeredGridLayoutManager(2,
+                        StaggeredGridLayoutManager.VERTICAL));
+                break;
+
+        }
+
     }
 
 }
