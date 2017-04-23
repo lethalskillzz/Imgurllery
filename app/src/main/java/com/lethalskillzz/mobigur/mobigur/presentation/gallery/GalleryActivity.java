@@ -112,7 +112,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
         refreshActionBar();
 
-        presenter = new GalleryPresenter();
+        presenter = new GalleryPresenter(this);
         presenter.attachView(this);
 
         setupViews();

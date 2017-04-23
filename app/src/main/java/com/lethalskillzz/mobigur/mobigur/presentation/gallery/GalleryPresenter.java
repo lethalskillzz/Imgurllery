@@ -56,12 +56,13 @@ public class GalleryPresenter extends BasePresenter<GalleryMvpContract.View> imp
                     @Override
                     public void onCompleted() {
 
-                        imageDataSource.open();
-                        imageDataSource.clearAllImages();
+
                         for(Image i : images) {
+                            imageDataSource.open();
+                            imageDataSource.deleteImage(i);
                             imageDataSource.createImage(i);
+                            imageDataSource.close();
                         }
-                        imageDataSource.close();
 
                         getView().hideLoading();
 

@@ -110,44 +110,35 @@ public class ImageDataSource {
     /**
      * Read Image by Id
      */
-    public List<Image> readImageById(String id) {
+    public Image readImageById(String id) {
 
         String whereClause = DatabaseHelper.COLUMN_ID + " LIKE ?";
         String [] whereArgs = {"%"+id+"%"};
-        List<Image> images = new ArrayList<>();
+        Image image = new Image();
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_IMAGE,
                 allColumns,whereClause, whereArgs, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Image image = cursorToImage(cursor);
-            images.add(image);
+            image = cursorToImage(cursor);
             cursor.moveToNext();
         }
         // make sure to close the cursor
         cursor.close();
-        return images;
+        return image;
     }
 
 
 
     /**
-     * Delete Single Image
+     * Delete Image
      */
-    public long deleteSingleImage(Image image) {
+    public long deleteImage(Image image) {
         String id = image.getId();
         return database.delete(DatabaseHelper.TABLE_IMAGE, DatabaseHelper.COLUMN_ID
-                + " = " + id, null);
+                + " = " + "'" + id + "'", null);
     }
-
-    /**
-     * Clear All Images
-     */
-    public void clearAllImages() {
-        database.delete(DatabaseHelper.TABLE_IMAGE, null, null);
-    }
-
 
 
     private Image cursorToImage(Cursor cursor) {
