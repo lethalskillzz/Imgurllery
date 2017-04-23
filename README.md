@@ -15,7 +15,7 @@ The app uses imgur.com API to access images. You must provide your own [API key]
 Just put your API key into `gradle.properties` file (create the file if it does not exist already):
 
 ```gradle
-CLIENT_ID = "Client-ID abcd1234"
+API_KEY = "Client-ID abcd1234"
 ```
 
 ### Testing

@@ -51,7 +51,7 @@ public class GalleryPresenter extends BasePresenter<GalleryMvpContract.View> imp
 
         Observable<Page> call;
 
-        call = apiService.getPage(context.getString(R.string.client_id),
+        call = apiService.getPage(context.getString(R.string.api_key),
                 AppConfig.GALLERY_ROUTE+mOrderRoute);
 
         addSubscription(call.subscribeOn(Schedulers.io())
