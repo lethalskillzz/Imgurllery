@@ -104,4 +104,19 @@ public class GalleryPresenter extends BasePresenter<GalleryMvpContract.View> imp
 
     }
 
+
+
+    @Override
+    public void getOfflineGallery() {
+
+        imageDataSource.open();
+        if(!imageDataSource.isImageEmpty()) {
+            images = imageDataSource.readAllImages();
+            getView().showGallery(images);
+        }
+        imageDataSource.close();
+
+
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.lethalskillzz.mobigur;
+package com.lethalskillzz.mobigur.gallery;
 
 import android.content.pm.ActivityInfo;
 import android.support.test.espresso.contrib.RecyclerViewActions;
@@ -36,7 +36,7 @@ public class GalleryActivityOrientationChangeTest {
         changeOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         clickOnRandomItem(R.id.gallery_recycler_view);
-        onView(withId(R.id.item_image_image)).perform(click());
+        onView(withId(R.id.item_image_card)).perform(click());
 
         pressBack();
 

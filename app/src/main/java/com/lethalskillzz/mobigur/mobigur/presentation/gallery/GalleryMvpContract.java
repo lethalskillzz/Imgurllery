@@ -24,6 +24,7 @@ public interface GalleryMvpContract {
 
     public interface Presenter extends Mvp.Presenter<GalleryMvpContract.View> {
         void getGallery(String mOrderType);
+        void getOfflineGallery();
     }
 
 }

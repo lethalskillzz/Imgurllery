@@ -123,6 +123,7 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
 
         refreshText.setVisibility(View.GONE);
 
+
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(CURRENT_NAV_KEY)) {
                 navItemId = savedInstanceState.getInt(CURRENT_NAV_KEY);
@@ -145,6 +146,9 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
             setRecyclerLayout();
 
         } else {
+
+            presenter.getOfflineGallery();
+
             if (cd.isConnectingToInternet()) {
 
                 presenter.getGallery(mOrderRoute);
