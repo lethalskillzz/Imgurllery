@@ -13,7 +13,7 @@
         android:layout_height="@dimen/navHeaderImageSize"
         android:layout_marginTop="@dimen/navHeaderImageMarginTop"
         android:contentDescription="@string/navHeaderImageDescription"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/logo"
         android:tint="@color/colorLightGray" />
 
     <TextView

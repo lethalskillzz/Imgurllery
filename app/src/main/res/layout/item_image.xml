@@ -29,7 +29,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/colorBlackTitleBackground"
             android:ellipsize="end"
-            android:padding="@dimen/item_image_title_padding"
+            android:padding="@dimen/title_padding"
             android:textColor="@android:color/white"
             android:textSize="@dimen/item_image_title_size"
             android:maxLines="1"
