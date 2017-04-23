@@ -71,12 +71,6 @@ public class AppConfig {
     public static final String BASE_IMG_URL = "https://i.imgur.com/";
 
 
-    // Imgur API Key
-    public static final String API_KEY = "<Your API Key>";
-    // User Agent
-    public static final String USER_AGENT = "lethalskillzz.com";
-
-
     public static final String LARGE_IMG_SUFFIX = "l.jpg";
     public static final String MEDIUM_IMG_SUFFIX = "m.jpg";
     public static final String SMALL_IMG_SUFFIX = "t.jpg";

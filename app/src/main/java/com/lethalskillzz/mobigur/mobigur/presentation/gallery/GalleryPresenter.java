@@ -3,6 +3,7 @@ package com.lethalskillzz.mobigur.mobigur.presentation.gallery;
 import android.content.Context;
 import android.util.Log;
 
+import com.lethalskillzz.imgurllery.R;
 import com.lethalskillzz.mobigur.mobigur.data.database.dao.ImageDataSource;
 import com.lethalskillzz.mobigur.mobigur.data.model.Image;
 import com.lethalskillzz.mobigur.mobigur.data.model.Page;
@@ -30,12 +31,14 @@ public class GalleryPresenter extends BasePresenter<GalleryMvpContract.View> imp
 
     private ImageDataSource imageDataSource;
     private List<Image> images;
+    private Context context;
 
     public GalleryPresenter(Context context) {
+        this.context = context;
         imageDataSource = new ImageDataSource(context);
         images = new ArrayList<>();
-    }
 
+    }
 
     @Override
     public void getGallery(String mOrderRoute) {
@@ -48,14 +51,14 @@ public class GalleryPresenter extends BasePresenter<GalleryMvpContract.View> imp
 
         Observable<Page> call;
 
-        call = apiService.getPage(AppConfig.GALLERY_ROUTE+mOrderRoute);
+        call = apiService.getPage(context.getString(R.string.client_id),
+                AppConfig.GALLERY_ROUTE+mOrderRoute);
 
         addSubscription(call.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Page>() {
                     @Override
                     public void onCompleted() {
-
 
                         for(Image i : images) {
                             imageDataSource.open();
