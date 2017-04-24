@@ -7,7 +7,7 @@
     <dimen name="title_padding">5dp</dimen>
 
     <dimen name="navHeaderImageMarginTop">25dp</dimen>
-    <dimen name="navHeaderImageSize">20dp</dimen>
+    <dimen name="navHeaderImageSize">80dp</dimen>
     <dimen name="navHeaderContentPadding">16dp</dimen>
 
     <dimen name="details_padding">10dp</dimen>

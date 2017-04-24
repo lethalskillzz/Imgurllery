@@ -20,6 +20,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Created by ibrahimabdulkadir on 23/04/2017.
@@ -36,7 +38,7 @@ public class DetailsActivityTest {
     public void testToolbarDesign() {
         onView(withId(R.id.details_toolbar)).check(matches(isDisplayed()));
 
-        //onView(withText(R.string.title_activity_about)).check(matches(withParent(withId(R.id.details_toolbar))));
+        onView(withText(R.string.title_activity_about)).check(matches(withParent(withId(R.id.details_toolbar))));
 
         onView(withId(R.id.details_toolbar)).check(matches(withToolbarBackGroundColor()));
     }
