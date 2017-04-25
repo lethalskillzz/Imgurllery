@@ -5,7 +5,10 @@ import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.lethalskillzz.imgurllery.R;
 import com.lethalskillzz.mobigur.mobigur.presentation.gallery.GalleryActivity;
@@ -17,9 +20,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.AnyOf.anyOf;
+import static org.hamcrest.core.Is.is;
 
 /**
  * Created by ibrahimabdulkadir on 23/04/2017.
@@ -34,9 +44,10 @@ public class GalleryActivtyTest {
 
     @Test
     public void testToolbarDesign() {
+
         onView(withId(R.id.gallery_toolbar)).check(matches(isDisplayed()));
 
-        //onView(withText(R.string.app_name)).check(matches(withParent(withId(R.id.gallery_toolbar))));
+        onView(withText(R.string.app_name)).check(matches(withParent(withId(R.id.gallery_toolbar))));
 
         onView(withId(R.id.gallery_toolbar)).check(matches(withToolbarBackGroundColor()));
     }
@@ -59,4 +70,25 @@ public class GalleryActivtyTest {
         };
     }
 
+
+
+    @Test
+    public void testSideNavigation() {
+
+        // Click on the hamburger menu
+        onView(androidHomeMatcher()).perform(click());
+
+        // Check that the navigation drawer is now displayed
+        onView(withId(R.id.gallery_drawer_layout)).check(matches(isDisplayed()));
+        
+    }
+
+    public static Matcher<View> androidHomeMatcher() {
+        return allOf(
+                withParent(withClassName(is(Toolbar.class.getName()))),
+                withClassName(anyOf(
+                        is(ImageButton.class.getName()),
+                        is(AppCompatImageButton.class.getName())
+                )));
+    }
 }

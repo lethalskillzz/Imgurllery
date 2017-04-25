@@ -675,7 +675,6 @@ public class GalleryActivity extends AppCompatActivity implements GalleryMvpCont
                 rView.setLayoutManager(new StaggeredGridLayoutManager(2,
                         StaggeredGridLayoutManager.VERTICAL));
                 break;
-
         }
 
     }
