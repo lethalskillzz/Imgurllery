@@ -80,7 +80,7 @@ public class GalleryActivtyTest {
 
         // Check that the navigation drawer is now displayed
         onView(withId(R.id.gallery_drawer_layout)).check(matches(isDisplayed()));
-        
+
     }
 
     public static Matcher<View> androidHomeMatcher() {
